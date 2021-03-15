@@ -10,6 +10,8 @@ class Internship extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'company_name', 'company_location', 'job_type', 'pdf_url'];
+    public $timestamps = false;
+
 
     public function user() 
     {

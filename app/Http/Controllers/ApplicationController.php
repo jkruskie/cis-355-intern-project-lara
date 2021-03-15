@@ -145,8 +145,10 @@ class ApplicationController extends Controller
      * https://laravel.com/docs/8.x/eloquent#retrieving-or-creating-models
      * 
      */
-    public function destroy(Application $application)
+    public function destroy($id)
     {
-        //
+        $application = Application::findOrFail($id);
+        $application->delete();
+        return redirect()->back();
     }
 }

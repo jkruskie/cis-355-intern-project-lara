@@ -16,11 +16,11 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
     
-    public function show_login_form()
+    public function login()
     {
         return view('Auth.login');
     }
-    public function process_login(Request $request)
+    public function processLogin(Request $request)
     {
         $request->validate([
             'email' => 'required',
@@ -40,28 +40,33 @@ class LoginController extends Controller
             return redirect()->back();
         }
     }
-    public function show_signup_form()
+    public function registerQuestion()
     {
         return view('Auth.register');
     }
-    public function process_signup(Request $request)
-    {   
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required'
-        ]);
+    // public function registerStudent(Request $request)
+    // {   
+    //     $request->validate([
+    //         'name' => 'required',
+    //         'email' => 'required',
+    //         'password' => 'required'
+    //     ]);
  
-        $user = User::create([
-            'name' => trim($request->input('name')),
-            'email' => strtolower($request->input('email')),
-            'password' => bcrypt($request->input('password')),
-        ]);
+    //     $user = User::create([
+    //         'name' => trim($request->input('name')),
+    //         'email' => strtolower($request->input('email')),
+    //         'password' => bcrypt($request->input('password')),
+    //     ]);
 
-        session()->flash('message', 'Your account is created');
+    //     session()->flash('message', 'Your account is created');
        
-        return redirect()->route('login');
+    //     return redirect()->route('login');
+    // }
+
+    public function registerStudent() {
+        dd('hi');
     }
+    
     public function logout()
     {
         \Auth::logout();

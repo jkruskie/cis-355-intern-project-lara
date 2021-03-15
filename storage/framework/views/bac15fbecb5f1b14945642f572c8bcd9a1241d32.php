@@ -1,14 +1,15 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <form method="post" action="/login">
-    @csrf
+    <?php echo csrf_field(); ?>
     <div class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col mt-4">
-      @if (Session::has('error'))
+      <?php if(Session::has('error')): ?>
         <span class="flex items-center font-medium tracking-wide text-red-500 text-md mt-1 ml-1 mb-1">
-          {{ Session::get('error') }}
+          <?php echo e(Session::get('error')); ?>
+
         </span>
-      @endif
+      <?php endif; ?>
       <div class="mb-4">
         <label class="block text-grey-darker text-sm font-bold mb-2" for="email">
           Email
@@ -28,4 +29,5 @@
       </div>
     </div>
 </form>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\GH Repos\cis-355-intern-project-lara\resources\views/Auth/login.blade.php ENDPATH**/ ?>

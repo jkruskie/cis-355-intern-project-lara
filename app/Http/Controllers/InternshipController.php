@@ -45,7 +45,7 @@ class InternshipController extends Controller
      */
     public function create()
     {
-        //
+        return view('Internships.create');
     }
 
     /**
@@ -56,7 +56,33 @@ class InternshipController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $internship = new Internship;
+        $internship->fill($request->except('job_description')); 
+        $internship->user_id = \Auth::user()->id;
+        
+        // File was uploaded
+        if($request->has('job_description')) {
+            $request->validate([
+                'file' => 'mimes:pdf|max:2048',
+            ]);
+
+            $fileName = Str::uuid() . '.' . $request->job_description->extension();
+
+            $request->job_description->move(public_path('pdf'), $fileName);
+            $internship->pdf_url = $fileName;
+        } 
+
+        // Try to save the model
+        if($internship->save()) {
+            // Model saved successfully
+            // Sent back to internship page with message
+            session()->flash('message', 'The internship has been saved');
+            return redirect()->route('internships'); 
+        }
+        // Model failed to save
+        // Return to previous page with error
+        session()->flash('message', 'The internship failed to save');
+        return redirect()->back();
     }
 
     /**
@@ -106,9 +132,9 @@ class InternshipController extends Controller
                 'file' => 'mimes:pdf|max:2048',
             ]);
 
-            $fileName = Str::uuid() . '.' . $request->file->extension();  
+            $fileName = Str::uuid() . '.' . $request->job_description->extension();
 
-            $request->file->move(public_path('pdfs'), $fileName);
+            $request->job_description->move(public_path('pdf'), $fileName);
             $internship->pdf_url = $fileName;
         } 
 
@@ -132,8 +158,10 @@ class InternshipController extends Controller
      * @param  \App\Models\Internship  $internship
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Internship $internship)
+    public function destroy($id)
     {
-        //
+        $internship = Internship::findOrFail($id);
+        $internship->delete();
+        return redirect()->back();
     }
 }

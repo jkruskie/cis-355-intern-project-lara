@@ -1,5 +1,6 @@
-@extends('layouts.app')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
+<p class="text-lg text-center font-bold m-5">Show Application</p>
 <div>
     <div class="mt-5 md:mt-0 md:col-span-2">
         <div class="rounded-t-lg m-5 w-full mx-auto bg-gray-800 text-gray-200">
@@ -10,7 +11,7 @@
                         Internship
                         </label>
                         <div class="mb-4 flex rounded-md shadow-sm">
-                            <input type="text" name="internship" id="internship" value="{{ $application->internship->company_name }}" class="margin-0-auto text-black p-1" readonly="readonly">
+                            <input type="text" name="internship" id="internship" value="<?php echo e($application->internship->company_name); ?>" class="margin-0-auto text-black p-1">
                         </div>
                     </div>
                 </div>
@@ -20,7 +21,7 @@
                         Name
                         </label>
                         <div class="mb-4 flex rounded-md shadow-sm">
-                            <input type="text" name="name" id="name" value="{{ $application->user->name }}" class="margin-0-auto text-black p-1" readonly="readonly">
+                            <input type="text" name="name" id="name" value="<?php echo e($application->user->name); ?>" class="margin-0-auto text-black p-1">
                         </div>
                     </div>
                 </div>
@@ -30,7 +31,7 @@
                         Created At
                         </label>
                         <div class="mb-4 flex rounded-md shadow-sm">
-                            <input type="text" name="created_at" id="created_at" value="{{ $application->created_at }}" class="margin-0-auto text-black p-1" readonly="readonly">
+                            <input type="text" name="created_at" id="created_at" value="<?php echo e($application->created_at); ?>" class="margin-0-auto text-black p-1">
                         </div>
                     </div>
                 </div>
@@ -38,4 +39,5 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\GH Repos\cis-355-intern-project-lara\resources\views/Applications/show.blade.php ENDPATH**/ ?>

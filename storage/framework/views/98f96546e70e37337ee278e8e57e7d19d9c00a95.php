@@ -11,7 +11,7 @@
     <!-- Global navigation -->
     <nav>
       <ul class="list-reset md:flex md:items-center">
-        @if (Auth::check())
+        <?php if(Auth::check()): ?>
           <li class="md:ml-4">
             <a href="/internships" class="text-center text-center border-t block no-underline hover:underline py-2 text-grey-darkest hover:text-black md:border-none md:p-0">
               <button class="py-2 rounded-lg border-2 border-red-500 px-4 bg-white text-black font-semibold rounded-lg shadow-md hover:bg-red focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75">
@@ -19,7 +19,7 @@
               </button>
             </a>
           </li>
-        @else
+        <?php else: ?>
           <li class="md:ml-4">
             <a href="/login" class="text-center border-t block no-underline hover:underline py-2 text-grey-darkest hover:text-black md:border-none md:p-0">
               <button class="py-2 rounded-lg border-2 border-red-500 px-4 bg-white text-black font-semibold rounded-lg shadow-md hover:bg-red focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75">
@@ -34,9 +34,9 @@
               </button>
             </a>
           </li>
-        @endif
+        <?php endif; ?>
       </ul>
     </nav>
     <!-- END Global navigation -->
   
-  </header>
+  </header><?php /**PATH D:\GH Repos\cis-355-intern-project-lara\resources\views/layouts/navbar.blade.php ENDPATH**/ ?>
