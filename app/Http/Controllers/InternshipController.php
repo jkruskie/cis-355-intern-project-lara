@@ -4,9 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Internship;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class InternshipController extends Controller
 {
+
+        /**
+     * DOCUMENTATION
+     * 
+     * https://laravel.com/docs/8.x/eloquent#retrieving-or-creating-models
+     * https://laravel.com/docs/8.x/views#passing-data-to-views
+     * 
+     *  */ 
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,8 +25,16 @@ class InternshipController extends Controller
      */
     public function index()
     {
+        // Check if user is an employer
+        if(\Auth::user()->user_type == 1) {
+            // Employer, send only their own internships
+            $internships = Internship::whereUserId(\Auth::user()->id)->paginate(10);
+        } else {
+            // Student, send all internships
+            $internships = Internship::paginate(10);
+        }
         return view('Internships.index', [
-            'internships' => Internship::paginate(10)
+            'internships' => $internships
         ]);
     }
 
@@ -46,9 +65,12 @@ class InternshipController extends Controller
      * @param  \App\Models\Internship  $internship
      * @return \Illuminate\Http\Response
      */
-    public function show(Internship $internship)
+    public function show($id)
     {
-        //
+        // Return view with Internship 
+        return view('Internships.show', [
+            'internship' => Internship::findOrFail($id)
+        ]);
     }
 
     /**
@@ -57,9 +79,12 @@ class InternshipController extends Controller
      * @param  \App\Models\Internship  $internship
      * @return \Illuminate\Http\Response
      */
-    public function edit(Internship $internship)
+    public function edit($id)
     {
-        //
+        // Return view with internship
+        return view('Internships.edit', [
+            'internship' => Internship::findOrFail($id)
+        ]);
     }
 
     /**
@@ -69,9 +94,36 @@ class InternshipController extends Controller
      * @param  \App\Models\Internship  $internship
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Internship $internship)
+    public function update(Request $request, $id)
     {
-        //
+        // Get Internship by id and fill it
+        $internship = Internship::findOrFail($id);
+        $internship->fill($request->except('job_description')); 
+        
+        // File was uploaded
+        if($request->has('job_description')) {
+            $request->validate([
+                'file' => 'mimes:pdf|max:2048',
+            ]);
+
+            $fileName = Str::uuid() . '.' . $request->file->extension();  
+
+            $request->file->move(public_path('pdfs'), $fileName);
+            $internship->pdf_url = $fileName;
+        } 
+
+        // Try to save the model
+        if($internship->save()) {
+            // Model saved successfully
+            // Sent back to internship page with message
+            session()->flash('message', 'The internship has been saved');
+            return redirect()->route('internships'); 
+        }
+        // Model failed to save
+        // Return to previous page with error
+        session()->flash('message', 'The internship failed to save');
+        return redirect()->back();
+
     }
 
     /**
