@@ -2,7 +2,7 @@
   
     <!-- Logo text or image -->
     <div class="flex items-center justify-between mb-4 md:mb-0">
-        <a class="no-underline text-grey-darkest hover:text-black" href="/internships">
+        <a class="no-underline text-grey-darkest hover:text-black" href="/">
             <img src="/images/logo_200x85.png" alt="JobCorse">
         </a>
     </div>

@@ -25,7 +25,8 @@ Route::namespace('Auth')->group(function () {
     Route::get('/register/student','LoginController@registerStudent');
     Route::get('/register/employer','LoginController@registerEmployer');
     Route::get('/logout','LoginController@logout')->name('logout');
-    Route::post('/register', 'LoginController@processRegister');
+    Route::post('/register/student', 'LoginController@processStudent');
+    Route::post('/register/employer', 'LoginController@processEmployer');
 });
     
 // Authenticated Routes
@@ -50,7 +51,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Users
     Route::get('/users', 'UserController@index')->name('users');
-    Route::get('/users/create', 'UserController@create');
     Route::get('/users/edit/{id}', 'UserController@edit');
     Route::get('/users/show/{id}', 'UserController@show');
     Route::get('/users/delete/{id}', 'UserController@destroy');

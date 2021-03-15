@@ -44,29 +44,58 @@ class LoginController extends Controller
     {
         return view('Auth.register');
     }
-    // public function registerStudent(Request $request)
-    // {   
-    //     $request->validate([
-    //         'name' => 'required',
-    //         'email' => 'required',
-    //         'password' => 'required'
-    //     ]);
- 
-    //     $user = User::create([
-    //         'name' => trim($request->input('name')),
-    //         'email' => strtolower($request->input('email')),
-    //         'password' => bcrypt($request->input('password')),
-    //     ]);
-
-    //     session()->flash('message', 'Your account is created');
-       
-    //     return redirect()->route('login');
-    // }
 
     public function registerStudent() {
-        dd('hi');
+        return view('Auth.student');
+    }
+
+    public function registerEmployer() {
+        return view('Auth.employer');
+    }
+
+    public function processStudent(Request $request)
+    {
+        $user = User::find($request->email);
+        if($user) { // User exists already
+            session()->flash('error', 'Account exists already');
+            return redirect()->back();
+        } else { // No user exists
+            $user = new User;
+            $user->fill($request->all());
+            $user->user_type = 0;
+            if($user->save()){ // Try to save user
+                // Saved, return user to login page
+                session()->flash('message', 'Account created');
+                return redirect()->route('login');
+            }
+            // User failed to save
+            session()->flash('error', 'Account creation failed');
+            return redirect()->back();
+        }
+
     }
     
+    public function processEmployer(Request $request)
+    {
+        $user = User::find($request->email);
+        if($user) { // User exists already
+            session()->flash('error', 'Account exists already');
+            return redirect()->back();
+        } else { // No user exists
+            $user = new User;
+            $user->fill($request->all());
+            $user->user_type = 1;
+            if($user->save()){ // Try to save user
+                // Saved, return user to login page
+                session()->flash('message', 'Account created');
+                return redirect()->route('login');
+            }
+            // User failed to save
+            session()->flash('error', 'Account creation failed');
+            return redirect()->back();
+        }
+    }
+
     public function logout()
     {
         \Auth::logout();
